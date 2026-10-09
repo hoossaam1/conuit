@@ -1,0 +1,13 @@
+{
+  "name": "lv-filling-ratio",
+  "version": "1.0.0",
+  "description": "Conduit Filling Ratio Calculator",
+  "scripts": {
+    "build": "echo Assets ready"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  }
+}
