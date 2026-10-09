@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>LV Filling Ratio</title>
+  <title>Conduit fill</title>
   <style>
     :root {
-      --primary: #0d47a1;
-      --primary-hover: #1565c0;
-      --bg: #f4f6f9;
+      --bg: #f2f5f3;
       --card-bg: #ffffff;
-      --border: #d0d7de;
-      --text: #1f2328;
-      --text-dim: #8c959f;
-      --wa-green: #25d366;
-      --wa-hover: #1ebe5d;
+      --border: #dbe4dc;
+      --border-focus: #347854;
+      --primary: #347854;
+      --primary-dark: #275e41;
+      --badge-bg: #e8f3ec;
+      --text-main: #1c261f;
+      --text-muted: #697d6f;
+      --pill-bg: #eaf0eb;
       --pass: #2e7d32;
       --fail: #c62828;
     }
@@ -29,117 +30,242 @@
 
     body {
       background-color: var(--bg);
-      color: var(--text);
-      padding: 12px;
+      color: var(--text-main);
+      padding: 14px 12px 30px 12px;
       font-size: 14px;
-      line-height: 1.4;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 520px;
       margin: 0 auto;
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
 
     /* Top Bar */
-    .header-bar {
+    .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 14px;
-      border-bottom: 2px solid #e1e4e8;
-      padding-bottom: 10px;
+      padding: 4px 2px;
     }
 
-    .title {
-      font-size: 1.3rem;
-      font-weight: 700;
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .brand-text .sub {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
       color: var(--primary);
+      text-transform: uppercase;
+    }
+
+    .brand-text .main-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.15;
     }
 
     .wa-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background-color: var(--wa-green);
-      color: #fff;
-      text-decoration: none;
+      background: #ffffff;
+      color: #128c7e;
+      border: 1.5px solid #d0ded3;
       padding: 6px 14px;
       border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      box-shadow: 0 2px 5px rgba(37,211,102,0.3);
-      transition: background 0.2s;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.82rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
 
-    .wa-btn:active {
-      background-color: var(--wa-hover);
-    }
-
-    /* Step Card */
+    /* Card Architecture */
     .card {
+      background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 18px;
+      padding: 16px;
       margin-bottom: 12px;
-      background: #fafbfc;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: padding 0.2s ease;
     }
 
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #24292f;
-      margin-bottom: 8px;
-    }
-
-    .ground-toggle-row {
+    .card-header {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      font-weight: 600;
+      user-select: none;
     }
 
-    /* 2 Column Layout */
-    .split-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      position: relative;
-    }
-
-    @media (max-width: 680px) {
-      .split-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .col-card {
-      background: #fff;
-      border: 1px solid #e1e4e8;
-      border-radius: 6px;
-      padding: 10px;
-      transition: opacity 0.2s, background 0.2s;
-    }
-
-    .col-header {
+    .card-header-left {
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-weight: 700;
-      margin-bottom: 10px;
+      gap: 10px;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .badge-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--badge-bg);
       color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    /* Form Fields */
-    .field-grid {
+    .card-titles .c-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-titles .c-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .card-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Expand / Minimize Arrow Button */
+    .chevron-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      transition: background-color 0.2s;
+    }
+
+    .chevron-btn:active {
+      background-color: var(--badge-bg);
+    }
+
+    .chevron-icon {
+      transition: transform 0.25s ease;
+    }
+
+    .chevron-btn.collapsed .chevron-icon {
+      transform: rotate(-90deg);
+    }
+
+    /* Collapsible Body */
+    .collapse-body {
+      margin-top: 14px;
+      display: block;
+    }
+
+    .collapse-body.collapsed {
+      display: none;
+    }
+
+    /* Switch Component */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5ce;
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    /* Segmented Pill Selector */
+    .pill-selector {
+      display: flex;
+      background: var(--pill-bg);
+      border-radius: 12px;
+      padding: 3px;
+      margin-bottom: 14px;
+      gap: 2px;
+    }
+
+    .pill-btn {
+      flex: 1;
+      padding: 8px 0;
+      border: none;
+      background: transparent;
+      border-radius: 9px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pill-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Grid & Form Fields */
+    .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
     }
 
     .full-width {
@@ -152,1077 +278,863 @@
       gap: 4px;
     }
 
-    label {
-      font-size: 0.8rem;
+    .field-label {
+      font-size: 0.76rem;
       font-weight: 600;
-      color: #57606a;
+      color: var(--text-muted);
     }
 
-    select, input[type="number"], input[type="text"] {
+    select, input[type="number"] {
       width: 100%;
-      height: 36px;
-      border: 1px solid #d0d7de;
-      border-radius: 6px;
-      padding: 0 8px;
-      font-size: 0.85rem;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
       background-color: #fff;
-      color: #24292f;
+      color: var(--text-main);
       outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23697d6f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 16px;
+    }
+
+    input[type="number"] {
+      background-image: none;
     }
 
     select:focus, input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(13,71,161,0.15);
+      border-color: var(--border-focus);
     }
 
-    .qty-box {
-      width: 70px;
+    .page-note {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 3px;
+      padding-left: 2px;
+      min-height: 16px;
     }
 
-    .page-indicator {
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-top: 8px;
-    }
-
-    /* Dimmed / Inactive State */
-    .dimmed {
-      opacity: 0.45;
-      pointer-events: none;
-      background-color: #f1f2f4 !important;
-    }
-
-    .dimmed select,
-    .dimmed input {
-      background-color: #eaecef !important;
-      color: #8c959f !important;
-    }
-
-    .dimmed label,
-    .dimmed .page-indicator {
-      color: #8c959f !important;
-    }
-
-    /* Step 3: Conduit */
-    .calc-row {
+    /* Stepper Counter (- 1 +) */
+    .stepper-container {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      padding: 0 4px;
     }
 
+    .step-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      min-width: 24px;
+      text-align: center;
+    }
+
+    /* Conduit Diameter Row */
+    .conduit-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .conduit-input-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+      padding: 0 12px;
+    }
+
+    .conduit-input-wrap input {
+      border: none;
+      height: 100%;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      padding: 0;
+    }
+
+    .conduit-unit {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Calculate Button */
     .calc-btn {
-      background-color: var(--primary);
+      width: 100%;
+      height: 48px;
+      background: var(--primary);
       color: #fff;
       border: none;
-      height: 38px;
-      padding: 0 20px;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 600;
+      border-radius: 14px;
+      font-size: 0.98rem;
+      font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 2px 4px rgba(13,71,161,0.25);
+      margin-top: 6px;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 8px rgba(52,120,84,0.25);
+      transition: background 0.2s;
     }
 
     .calc-btn:active {
-      background-color: var(--primary-hover);
+      background: var(--primary-dark);
     }
 
-    /* Results Card */
+    /* Results */
     .result-card {
-      border: 2px solid #0d47a1;
-      background: #f8faff;
-      border-radius: 8px;
-      padding: 12px;
-      margin-top: 8px;
+      border: 1.5px solid var(--primary);
+      background: #f7faf8;
     }
 
-    .res-line {
-      margin-bottom: 4px;
-      font-size: 0.88rem;
-    }
-
-    .fill-ratio {
-      font-size: 1.15rem;
+    .fill-percentage {
+      font-size: 1.45rem;
       font-weight: 800;
-      color: #0d47a1;
-      margin: 6px 0;
+      color: var(--primary);
+      margin: 8px 0;
     }
 
-    .status-badge {
+    .status-pill {
       display: inline-block;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
       font-weight: 700;
-      font-size: 0.95rem;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
-    .pass { color: var(--pass); }
-    .fail { color: var(--fail); }
+    .status-pill.pass {
+      background: #e8f5e9;
+      color: var(--pass);
+    }
+
+    .status-pill.fail {
+      background: #ffebee;
+      color: var(--fail);
+    }
+
+    .res-text {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <!-- Header Bar -->
-  <div class="header-bar">
-    <div class="title">Conduit Filling Ratio</div>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="brand-left">
+      <div class="app-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="sub">Field Calculator</div>
+        <div class="main-title">Conduit fill</div>
+      </div>
+    </div>
     <a class="wa-btn" href="https://wa.me/201148471071" target="_blank" rel="noopener">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.16 7.62C8.95 7.62 8.71 7.7 8.52 7.91C8.32 8.12 7.76 8.65 7.76 9.72C7.76 10.79 8.54 11.83 8.65 11.98C8.76 12.13 10.18 14.32 12.35 15.26C14.15 16.04 14.52 15.89 14.94 15.85C15.35 15.81 16.29 15.3 16.49 14.73C16.69 14.16 16.69 13.68 16.63 13.58C16.57 13.48 16.42 13.42 16.2 13.31C15.98 13.2 14.94 12.69 14.75 12.62C14.55 12.55 14.41 12.51 14.27 12.72C14.12 12.94 13.71 13.42 13.59 13.56C13.46 13.7 13.34 13.72 13.12 13.61C12.9 13.5 12.19 13.27 11.35 12.52C10.7 11.94 10.25 11.23 10.13 11.02C10.01 10.8 10.12 10.69 10.23 10.58C10.33 10.48 10.45 10.32 10.56 10.19C10.68 10.06 10.72 9.96 10.79 9.81C10.86 9.67 10.83 9.55 10.77 9.44C10.72 9.33 10.27 8.22 10.08 7.77C9.9 7.33 9.71 7.39 9.56 7.38C9.43 7.38 9.29 7.38 9.16 7.62Z"/>
       </svg>
       WhatsApp
     </a>
   </div>
 
-  <!-- Step 1: Main Power Conductor -->
-  <div class="card" id="step1-card">
-    <div class="card-title">Step 1: Main Power Conductor (Phase / Neutral)</div>
-    <div class="split-grid">
-      <!-- Cable Column -->
-      <div class="col-card" id="s1-cable-col">
-        <label class="col-header">
-          <input type="radio" name="s1-mode" value="Cable" checked onchange="syncStep('s1')">
-          Cable (0.6/1 kV)
-        </label>
-        <div class="field-grid">
+  <!-- Card 1: Main Conductor (Collapsible) -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCollapse('s1')">
+      <div class="card-header-left">
+        <div class="badge-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+        </div>
+        <div class="card-titles">
+          <div class="c-title">Main conductor</div>
+          <div class="c-sub">Phase or neutral</div>
+        </div>
+      </div>
+      <button class="chevron-btn" id="s1-chevron" type="button" aria-label="Toggle section">
+        <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <div class="collapse-body" id="s1-body">
+      <!-- Mode Selector -->
+      <div class="pill-selector">
+        <button class="pill-btn active" id="s1-btn-cable" onclick="setMode('s1', 'Cable')">Cable · 0.6/1 kV</button>
+        <button class="pill-btn" id="s1-btn-wire" onclick="setMode('s1', 'Wire')">Wire · 450/750 V</button>
+      </div>
+
+      <!-- Cable Fields -->
+      <div id="s1-cable-fields">
+        <div class="form-grid">
           <div class="field">
-            <label>Conductor:</label>
+            <div class="field-label">Conductor</div>
             <select id="s1-cond" onchange="updateCableSizes('s1')">
               <option value="Copper">Copper</option>
               <option value="Aluminium">Aluminium</option>
             </select>
           </div>
           <div class="field">
-            <label>Insulation:</label>
+            <div class="field-label">Insulation</div>
             <select id="s1-ins" onchange="updateCableSizes('s1')">
-              <option value="XLPE">XLPE</option>
               <option value="PVC">PVC</option>
+              <option value="XLPE">XLPE</option>
             </select>
           </div>
           <div class="field">
-            <label>Armour:</label>
+            <div class="field-label">Armour</div>
             <select id="s1-arm" onchange="onArmourChanged('s1')">
               <option value="Unarmoured">Unarmoured</option>
-              <option value="Armoured">Armoured</option>
+              <option value="Armoured" selected>Armoured</option>
             </select>
           </div>
           <div class="field">
-            <label>Armour Type:</label>
-            <select id="s1-arm-type" onchange="updateCableSizes('s1')" disabled></select>
+            <div class="field-label">Armour type</div>
+            <select id="s1-arm-type" onchange="updateCableSizes('s1')"></select>
           </div>
           <div class="field full-width">
-            <label>Cores:</label>
+            <div class="field-label">Cores</div>
             <select id="s1-cores" onchange="onCoresChanged('s1')">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4" selected>4</option>
-              <option value="4 (With Reduced Neutral)">4 (With Reduced Neutral)</option>
+              <option value="1" selected>1 core</option>
+              <option value="2">2 core</option>
+              <option value="3">3 core</option>
+              <option value="4">4 core</option>
+              <option value="4 (With Reduced Neutral)">4 core (Reduced Neutral)</option>
             </select>
           </div>
           <div class="field">
-            <label>Cable Size:</label>
-            <select id="s1-csize" onchange="onCableSelected('s1')"></select>
+            <div class="field-label">Cable size</div>
+            <select id="s1-csize" onchange="onSizeChanged('s1')"></select>
+            <div class="page-note" id="s1-c-sub"></div>
           </div>
           <div class="field">
-            <label>Qty:</label>
-            <input type="number" id="s1-cqty" class="qty-box" value="1" min="1" max="20">
+            <div class="field-label">Main conductor Quantity</div>
+            <div class="stepper-container">
+              <button class="step-btn" onclick="adjustQty('s1-qty', -1)">−</button>
+              <span class="step-value" id="s1-qty">1</span>
+              <button class="step-btn" onclick="adjustQty('s1-qty', 1)">+</button>
+            </div>
           </div>
         </div>
-        <div class="page-indicator" id="s1-cpage"></div>
       </div>
 
-      <!-- Wires Column -->
-      <div class="col-card dimmed" id="s1-wire-col">
-        <label class="col-header">
-          <input type="radio" name="s1-mode" value="Wires" onchange="syncStep('s1')">
-          Wires (450/750V)
-        </label>
-        <div class="field-grid">
+      <!-- Wire Fields -->
+      <div id="s1-wire-fields" style="display: none;">
+        <div class="form-grid">
           <div class="field full-width">
-            <label>Wire Type:</label>
+            <div class="field-label">Wire type</div>
             <select id="s1-wtype" onchange="updateWireSizes('s1')">
-              <option value="Stranded">Stranded (450/750V)</option>
-              <option value="Flexible">Flexible (450/750V)</option>
+              <option value="Stranded">Stranded · 450/750 V</option>
+              <option value="Flexible">Flexible · 450/750 V</option>
             </select>
           </div>
           <div class="field">
-            <label>Wire Size:</label>
-            <select id="s1-wsize" onchange="onWireSelected('s1')"></select>
+            <div class="field-label">Wire size</div>
+            <select id="s1-wsize" onchange="onSizeChanged('s1')"></select>
+            <div class="page-note" id="s1-w-sub"></div>
           </div>
           <div class="field">
-            <label>Qty:</label>
-            <input type="number" id="s1-wqty" class="qty-box" value="1" min="1" max="20">
+            <div class="field-label">Main conductor Quantity</div>
+            <div class="stepper-container">
+              <button class="step-btn" onclick="adjustQty('s1-w-qty', -1)">−</button>
+              <span class="step-value" id="s1-w-qty">1</span>
+              <button class="step-btn" onclick="adjustQty('s1-w-qty', 1)">+</button>
+            </div>
           </div>
         </div>
-        <div class="page-indicator" id="s1-wpage"></div>
       </div>
     </div>
   </div>
 
-  <!-- Step 2: Ground Conductor -->
-  <div class="card" id="step2-card">
-    <div class="card-title">Step 2: Protective Earth (Ground) Conductor</div>
-    <div class="ground-toggle-row">
-      <input type="checkbox" id="s2-include" checked onchange="syncStep('s2')">
-      <label for="s2-include" style="cursor: pointer; font-size: 0.9rem; color: #24292f;">
-        Include Ground Conductor in Conduit
-      </label>
-    </div>
-    <div class="split-grid">
-      <!-- Cable Column (Locked to 1 Core) -->
-      <div class="col-card dimmed" id="s2-cable-col">
-        <label class="col-header">
-          <input type="radio" name="s2-mode" value="Cable" onchange="syncStep('s2')">
-          Cable (0.6/1 kV)
-        </label>
-        <div class="field-grid">
-          <div class="field">
-            <label>Conductor:</label>
-            <select id="s2-cond" onchange="updateCableSizes('s2')">
-              <option value="Copper">Copper</option>
-              <option value="Aluminium">Aluminium</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Insulation:</label>
-            <select id="s2-ins" onchange="updateCableSizes('s2')">
-              <option value="XLPE">XLPE</option>
-              <option value="PVC">PVC</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Armour:</label>
-            <select id="s2-arm" onchange="onArmourChanged('s2')">
-              <option value="Unarmoured">Unarmoured</option>
-              <option value="Armoured">Armoured</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Armour Type:</label>
-            <select id="s2-arm-type" onchange="updateCableSizes('s2')" disabled></select>
-          </div>
-          <div class="field full-width">
-            <label>Cores:</label>
-            <select id="s2-cores" disabled>
-              <option value="1" selected>1</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Cable Size:</label>
-            <select id="s2-csize" onchange="onCableSelected('s2')"></select>
-          </div>
-          <div class="field">
-            <label>Qty:</label>
-            <input type="number" id="s2-cqty" class="qty-box" value="1" min="1" max="10">
-          </div>
-        </div>
-        <div class="page-indicator" id="s2-cpage"></div>
-      </div>
-
-      <!-- Wires Column (Default for Ground) -->
-      <div class="col-card" id="s2-wire-col">
-        <label class="col-header">
-          <input type="radio" name="s2-mode" value="Wires" checked onchange="syncStep('s2')">
-          Wires (450/750V)
-        </label>
-        <div class="field-grid">
-          <div class="field full-width">
-            <label>Wire Type:</label>
-            <select id="s2-wtype" onchange="updateWireSizes('s2')">
-              <option value="Stranded" selected>Stranded (450/750V)</option>
-              <option value="Flexible">Flexible (450/750V)</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Wire Size:</label>
-            <select id="s2-wsize" onchange="onWireSelected('s2')"></select>
-          </div>
-          <div class="field">
-            <label>Qty:</label>
-            <input type="number" id="s2-wqty" class="qty-box" value="1" min="1" max="10">
-          </div>
-        </div>
-        <div class="page-indicator" id="s2-wpage"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Step 3: Conduit Diameter -->
+  <!-- Card 2: Protective Earth (Collapsible) -->
   <div class="card">
-    <div class="card-title">Step 3: Conduit Diameter</div>
-    <div class="calc-row">
-      <div class="field" style="width: 200px;">
-        <label>Conduit Inner Diameter (mm):</label>
-        <input type="number" id="conduit-dia" value="63.0" step="0.1" min="1">
+    <div class="card-header">
+      <div class="card-header-left" onclick="toggleCollapse('s2')">
+        <div class="badge-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <div class="card-titles">
+          <div class="c-title">Protective earth</div>
+          <div class="c-sub">Earth / PE conductor</div>
+        </div>
       </div>
-      <button class="calc-btn" onclick="calculateFill()">Calculate Filling Ratio</button>
+      <div class="card-header-right">
+        <label class="switch" onclick="event.stopPropagation()">
+          <input type="checkbox" id="pe-toggle" checked onchange="togglePE()">
+          <span class="slider"></span>
+        </label>
+        <button class="chevron-btn" id="s2-chevron" type="button" onclick="toggleCollapse('s2')" aria-label="Toggle section">
+          <svg class="chevron-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="collapse-body" id="s2-body">
+      <div id="pe-container">
+        <!-- Mode Selector -->
+        <div class="pill-selector">
+          <button class="pill-btn" id="s2-btn-cable" onclick="setMode('s2', 'Cable')">Cable · 0.6/1 kV</button>
+          <button class="pill-btn active" id="s2-btn-wire" onclick="setMode('s2', 'Wire')">Wire · 450/750 V</button>
+        </div>
+
+        <!-- Cable Fields (Single Core Only) -->
+        <div id="s2-cable-fields" style="display: none;">
+          <div class="form-grid">
+            <div class="field">
+              <div class="field-label">Conductor</div>
+              <select id="s2-cond" onchange="updateCableSizes('s2')">
+                <option value="Copper">Copper</option>
+                <option value="Aluminium">Aluminium</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label">Insulation</div>
+              <select id="s2-ins" onchange="updateCableSizes('s2')">
+                <option value="PVC">PVC</option>
+                <option value="XLPE">XLPE</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label">Armour</div>
+              <select id="s2-arm" onchange="onArmourChanged('s2')">
+                <option value="Unarmoured">Unarmoured</option>
+                <option value="Armoured">Armoured</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label">Armour type</div>
+              <select id="s2-arm-type" onchange="updateCableSizes('s2')" disabled></select>
+            </div>
+            <div class="field">
+              <div class="field-label">Cable size</div>
+              <select id="s2-csize" onchange="onSizeChanged('s2')"></select>
+              <div class="page-note" id="s2-c-sub"></div>
+            </div>
+            <div class="field">
+              <div class="field-label">Protective earth Quantity</div>
+              <div class="stepper-container">
+                <button class="step-btn" onclick="adjustQty('s2-qty', -1)">−</button>
+                <span class="step-value" id="s2-qty">1</span>
+                <button class="step-btn" onclick="adjustQty('s2-qty', 1)">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wire Fields -->
+        <div id="s2-wire-fields">
+          <div class="form-grid">
+            <div class="field full-width">
+              <div class="field-label">Wire type</div>
+              <select id="s2-wtype" onchange="updateWireSizes('s2')">
+                <option value="Stranded" selected>Stranded · 450/750 V</option>
+                <option value="Flexible">Flexible · 450/750 V</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="field-label">Wire size</div>
+              <select id="s2-wsize" onchange="onSizeChanged('s2')"></select>
+              <div class="page-note" id="s2-w-sub"></div>
+            </div>
+            <div class="field">
+              <div class="field-label">Protective earth Quantity</div>
+              <div class="stepper-container">
+                <button class="step-btn" onclick="adjustQty('s2-w-qty', -1)">−</button>
+                <span class="step-value" id="s2-w-qty">1</span>
+                <button class="step-btn" onclick="adjustQty('s2-w-qty', 1)">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Results Box -->
-  <div class="result-card">
-    <div class="card-title" style="color: var(--primary);">Result</div>
-    <div class="res-line" id="res-cables-area">Total Cables/Wires Area: -- mm²</div>
-    <div class="res-line" id="res-conduit-area">Conduit Internal Area: -- mm²</div>
-    <div class="fill-ratio" id="res-ratio">Calculated Filling Ratio: -- %</div>
-    <div class="res-line" id="res-limit">Allowed Limit (NEC): -- %</div>
-    <div class="status-badge" id="res-status">Status: Ready</div>
+  <!-- Card 3: Conduit Diameter -->
+  <div class="card">
+    <div class="card-header" style="margin-bottom: 10px;">
+      <div class="card-header-left" style="cursor: default;">
+        <div class="badge-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+          </svg>
+        </div>
+        <div class="card-titles">
+          <div class="c-title">Conduit diameter</div>
+          <div class="c-sub">Measure the inner diameter</div>
+        </div>
+      </div>
+    </div>
+    <div class="conduit-row">
+      <div class="conduit-input-wrap">
+        <input type="number" id="conduit-dia" value="32" step="0.5" min="1">
+        <span class="conduit-unit">mm ID</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calculate Button -->
+  <button class="calc-btn" onclick="calculateFill()">Calculate Filling Ratio</button>
+
+  <!-- Card 4: Result -->
+  <div class="card result-card">
+    <div class="c-title" style="color: var(--primary); margin-bottom: 8px;">Calculation Results</div>
+    <div class="res-text" id="res-cables-area">Total Conductor Area: -- mm²</div>
+    <div class="res-text" id="res-conduit-area">Conduit Area: -- mm²</div>
+    <div class="fill-percentage" id="res-ratio">-- %</div>
+    <div class="res-text" id="res-limit" style="font-weight: 600;">Allowed Limit (NEC): -- %</div>
+    <div id="res-status" class="status-pill pass">Ready</div>
   </div>
 </div>
 
 <script>
 // =========================================================================
-// EMBEDDED ELSEWEDY CATALOG DATABASE (PAGES 61 - 99)
+// ELSEWEDY DATA MATRIX (PAGES 61 TO 99)
 // =========================================================================
-const WIRES_DB = [
-  // Page 61: Stranded Indoor Wires
-  { type: "Stranded", size: "1x1.5 RM", area: 1.5, od: 3.0, page: 61 },
-  { type: "Stranded", size: "1x2.5 RM", area: 2.5, od: 3.6, page: 61 },
-  { type: "Stranded", size: "1x4 RM", area: 4.0, od: 4.1, page: 61 },
-  { type: "Stranded", size: "1x6 RM", area: 6.0, od: 4.7, page: 61 },
-  { type: "Stranded", size: "1x10 RM", area: 10.0, od: 5.8, page: 61 },
-  { type: "Stranded", size: "1x16 RM", area: 16.0, od: 6.8, page: 61 },
-  { type: "Stranded", size: "1x25 RM", area: 25.0, od: 8.2, page: 61 },
-  { type: "Stranded", size: "1x35 RM", area: 35.0, od: 9.3, page: 61 },
-  { type: "Stranded", size: "1x50 RM", area: 50.0, od: 11.0, page: 61 },
-  { type: "Stranded", size: "1x70 RM", area: 70.0, od: 12.6, page: 61 },
-  { type: "Stranded", size: "1x95 RM", area: 95.0, od: 14.5, page: 61 },
-  { type: "Stranded", size: "1x120 RM", area: 120.0, od: 15.9, page: 61 },
-  { type: "Stranded", size: "1x150 RM", area: 150.0, od: 17.7, page: 61 },
-  { type: "Stranded", size: "1x185 RM", area: 185.0, od: 19.8, page: 61 },
-  { type: "Stranded", size: "1x240 RM", area: 240.0, od: 22.6, page: 61 },
-  { type: "Stranded", size: "1x300 RM", area: 300.0, od: 25.4, page: 61 },
-
-  // Page 62: Flexible Indoor Wires
-  { type: "Flexible", size: "1x1.5", area: 1.5, od: 3.0, page: 62 },
-  { type: "Flexible", size: "1x2.5", area: 2.5, od: 3.7, page: 62 },
-  { type: "Flexible", size: "1x4", area: 4.0, od: 4.2, page: 62 },
-  { type: "Flexible", size: "1x6", area: 6.0, od: 4.7, page: 62 },
-  { type: "Flexible", size: "1x10", area: 10.0, od: 6.2, page: 62 },
-  { type: "Flexible", size: "1x16", area: 16.0, od: 7.2, page: 62 },
-  { type: "Flexible", size: "1x25", area: 25.0, od: 9.5, page: 62 },
-  { type: "Flexible", size: "1x35", area: 35.0, od: 11.0, page: 62 },
-  { type: "Flexible", size: "1x50", area: 50.0, od: 12.6, page: 62 },
-  { type: "Flexible", size: "1x70", area: 70.0, od: 14.6, page: 62 },
-  { type: "Flexible", size: "1x95", area: 95.0, od: 17.0, page: 62 },
-  { type: "Flexible", size: "1x120", area: 120.0, od: 18.9, page: 62 },
-  { type: "Flexible", size: "1x150", area: 150.0, od: 21.2, page: 62 },
-  { type: "Flexible", size: "1x185", area: 185.0, od: 23.4, page: 62 },
-  { type: "Flexible", size: "1x240", area: 240.0, od: 26.9, page: 62 },
-  { type: "Flexible", size: "1x300", area: 300.0, od: 29.6, page: 62 }
+const WIRES = [
+  { type:"Stranded", size:"1x1.5 RM", area:1.5, od:3.0, page:61 },
+  { type:"Stranded", size:"1x2.5 RM", area:2.5, od:3.6, page:61 },
+  { type:"Stranded", size:"1x4 RM", area:4.0, od:4.1, page:61 },
+  { type:"Stranded", size:"1x6 RM", area:6.0, od:4.7, page:61 },
+  { type:"Stranded", size:"1x10 RM", area:10.0, od:5.8, page:61 },
+  { type:"Stranded", size:"1x16 RM", area:16.0, od:6.8, page:61 },
+  { type:"Stranded", size:"1x25 RM", area:25.0, od:8.2, page:61 },
+  { type:"Stranded", size:"1x35 RM", area:35.0, od:9.3, page:61 },
+  { type:"Stranded", size:"1x50 RM", area:50.0, od:11.0, page:61 },
+  { type:"Stranded", size:"1x70 RM", area:70.0, od:12.6, page:61 },
+  { type:"Stranded", size:"1x95 RM", area:95.0, od:14.5, page:61 },
+  { type:"Stranded", size:"1x120 RM", area:120.0, od:15.9, page:61 },
+  { type:"Stranded", size:"1x150 RM", area:150.0, od:17.7, page:61 },
+  { type:"Stranded", size:"1x185 RM", area:185.0, od:19.8, page:61 },
+  { type:"Stranded", size:"1x240 RM", area:240.0, od:22.6, page:61 },
+  { type:"Stranded", size:"1x300 RM", area:300.0, od:25.4, page:61 },
+  { type:"Flexible", size:"1x1.5", area:1.5, od:3.0, page:62 },
+  { type:"Flexible", size:"1x2.5", area:2.5, od:3.7, page:62 },
+  { type:"Flexible", size:"1x4", area:4.0, od:4.2, page:62 },
+  { type:"Flexible", size:"1x6", area:6.0, od:4.7, page:62 },
+  { type:"Flexible", size:"1x10", area:10.0, od:6.2, page:62 },
+  { type:"Flexible", size:"1x16", area:16.0, od:7.2, page:62 },
+  { type:"Flexible", size:"1x25", area:25.0, od:9.5, page:62 },
+  { type:"Flexible", size:"1x35", area:35.0, od:11.0, page:62 },
+  { type:"Flexible", size:"1x50", area:50.0, od:12.6, page:62 },
+  { type:"Flexible", size:"1x70", area:70.0, od:14.6, page:62 },
+  { type:"Flexible", size:"1x95", area:95.0, od:17.0, page:62 },
+  { type:"Flexible", size:"1x120", area:120.0, od:18.9, page:62 },
+  { type:"Flexible", size:"1x150", area:150.0, od:21.2, page:62 },
+  { type:"Flexible", size:"1x185", area:185.0, od:23.4, page:62 },
+  { type:"Flexible", size:"1x240", area:240.0, od:26.9, page:62 },
+  { type:"Flexible", size:"1x300", area:300.0, od:29.6, page:62 }
 ];
 
-const CABLES_DB = [
-  // Page 63: 1 Core Cu/PVC Unarmoured
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x4", area:4, od:7.1, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x6", area:6, od:7.6, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x10", area:10, od:8.3, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x16", area:16, od:9.3, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x25", area:25, od:10.6, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x35", area:35, od:11.7, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x50", area:50, od:13.4, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x70", area:70, od:15.0, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x95", area:95, od:17.1, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x120", area:120, od:18.5, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x150", area:150, od:20.5, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x185", area:185, od:22.8, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x240", area:240, od:25.8, page:63 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x300", area:300, od:28.8, page:63 },
+const CABLES = [
+  // Page 63
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x4", od:7.1, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x6", od:7.6, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x10", od:8.3, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x16", od:9.3, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x25", od:10.6, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x35", od:11.7, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x50", od:13.4, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x70", od:15.0, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x95", od:17.1, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x120", od:18.5, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x150", od:20.5, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x185", od:22.8, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x240", od:25.8, page:63 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x300", od:28.8, page:63 },
 
-  // Page 65: 1 Core Al/PVC Unarmoured
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x16", area:16, od:9.1, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x25", area:25, od:10.6, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x35", area:35, od:11.7, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x50", area:50, od:13.4, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x70", area:70, od:15.0, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x95", area:95, od:17.1, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x120", area:120, od:18.5, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x150", area:150, od:20.5, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x185", area:185, od:22.8, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x240", area:240, od:25.7, page:65 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x300", area:300, od:28.7, page:65 },
+  // Page 65
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x16", od:9.1, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x25", od:10.6, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x35", od:11.7, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x50", od:13.4, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x70", od:15.0, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x95", od:17.1, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x120", od:18.5, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x150", od:20.5, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x185", od:22.8, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x240", od:25.7, page:65 },
+  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"1", size:"1x300", od:28.7, page:65 },
 
-  // Page 66 & 67: 1 Core ATA Armoured
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x25 (ATA)", area:25, od:14.8, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x35 (ATA)", area:35, od:15.9, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x50 (ATA)", area:50, od:17.6, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x70 (ATA)", area:70, od:19.2, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x95 (ATA)", area:95, od:21.1, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x120 (ATA)", area:120, od:22.5, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x150 (ATA)", area:150, od:24.3, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x185 (ATA)", area:185, od:26.4, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x240 (ATA)", area:240, od:29.4, page:66 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x300 (ATA)", area:300, od:32.2, page:66 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x16 (ATA)", area:16, od:13.3, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x25 (ATA)", area:25, od:14.8, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x35 (ATA)", area:35, od:15.9, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x50 (ATA)", area:50, od:17.6, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x70 (ATA)", area:70, od:19.2, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x95 (ATA)", area:95, od:21.1, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x120 (ATA)", area:120, od:22.5, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x150 (ATA)", area:150, od:24.3, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x185 (ATA)", area:185, od:26.4, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x240 (ATA)", area:240, od:29.3, page:67 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x300 (ATA)", area:300, od:32.1, page:67 },
+  // Page 66 & 67
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x25 (ATA)", od:14.8, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x35 (ATA)", od:15.9, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x50 (ATA)", od:17.6, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x70 (ATA)", od:19.2, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x95 (ATA)", od:21.1, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x120 (ATA)", od:22.5, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x150 (ATA)", od:24.3, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x185 (ATA)", od:26.4, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x240 (ATA)", od:29.4, page:66 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x300 (ATA)", od:32.2, page:66 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x16 (ATA)", od:13.3, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x25 (ATA)", od:14.8, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x35 (ATA)", od:15.9, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x50 (ATA)", od:17.6, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x70 (ATA)", od:19.2, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x95 (ATA)", od:21.1, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x120 (ATA)", od:22.5, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x150 (ATA)", od:24.3, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x185 (ATA)", od:26.4, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x240 (ATA)", od:29.3, page:67 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"ATA", cores:"1", size:"1x300 (ATA)", od:32.1, page:67 },
 
-  // Page 68 & 69: 1 Core AWA Armoured
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x25 (AWA)", area:25, od:17.1, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x35 (AWA)", area:35, od:18.2, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x50 (AWA)", area:50, od:19.9, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x70 (AWA)", area:70, od:21.5, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x95 (AWA)", area:95, od:23.4, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x120 (AWA)", area:120, od:24.8, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x150 (AWA)", area:150, od:26.6, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x185 (AWA)", area:185, od:28.7, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x240 (AWA)", area:240, od:31.7, page:68 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x300 (AWA)", area:300, od:34.8, page:68 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x16 (AWA)", area:16, od:15.6, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x25 (AWA)", area:25, od:17.1, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x35 (AWA)", area:35, od:18.2, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x50 (AWA)", area:50, od:19.9, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x70 (AWA)", area:70, od:21.5, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x95 (AWA)", area:95, od:23.4, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x120 (AWA)", area:120, od:24.8, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x150 (AWA)", area:150, od:26.6, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x185 (AWA)", area:185, od:28.7, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x240 (AWA)", area:240, od:31.6, page:69 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x300 (AWA)", area:300, od:34.7, page:69 },
+  // Page 68 & 69
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x25 (AWA)", od:17.1, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x35 (AWA)", od:18.2, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x50 (AWA)", od:19.9, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x70 (AWA)", od:21.5, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x95 (AWA)", od:23.4, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x120 (AWA)", od:24.8, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x150 (AWA)", od:26.6, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x185 (AWA)", od:28.7, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x240 (AWA)", od:31.7, page:68 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x300 (AWA)", od:34.8, page:68 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x16 (AWA)", od:15.6, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x25 (AWA)", od:17.1, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x35 (AWA)", od:18.2, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x50 (AWA)", od:19.9, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x70 (AWA)", od:21.5, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x95 (AWA)", od:23.4, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x120 (AWA)", od:24.8, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x150 (AWA)", od:26.6, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x185 (AWA)", od:28.7, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x240 (AWA)", od:31.6, page:69 },
+  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"AWA", cores:"1", size:"1x300 (AWA)", od:34.7, page:69 },
 
-  // Page 71: Cu/PVC Unarmoured (4 Core Equal & Reduced Neutral)
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x1.5", area:1.5, od:10.8, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x2.5", area:2.5, od:11.9, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x4", area:4, od:14.0, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x6", area:6, od:15.6, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x10", area:10, od:17.0, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x16", area:16, od:19.6, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x25", area:25, od:23.5, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x35", area:35, od:26.2, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x50", area:50, od:28.3, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x70", area:70, od:32.1, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x95", area:95, od:35.8, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x120", area:120, od:39.4, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x150", area:150, od:43.9, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x185", area:185, od:48.9, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x240", area:240, od:55.2, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x300", area:300, od:61.3, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:22.6, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:24.6, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:28.3, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:31.9, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:34.3, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:37.7, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:41.5, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:46.4, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:52.4, page:71 },
-  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:58.2, page:71 },
+  // Page 70
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"2", size:"2x1.5", od:9.5, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"2", size:"2x2.5", od:10.4, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"2", size:"2x4", od:12.2, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"2", size:"2x6", od:13.4, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"2", size:"2x10", od:14.6, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"2", size:"2x16", od:16.6, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"2", size:"2x25", od:20.1, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"3", size:"3x1.5", od:10.0, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"3", size:"3x2.5", od:11.0, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"3", size:"3x4", od:12.8, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"3", size:"3x6", od:14.2, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"3", size:"3x10", od:15.5, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"3", size:"3x16", od:17.6, page:70 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"3", size:"3x25", od:21.4, page:70 },
 
-  // Page 73: Al/PVC Unarmoured (4 Core Equal & Reduced Neutral)
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x16", area:16, od:19.9, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x25", area:25, od:23.5, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x35", area:35, od:26.2, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x50", area:50, od:28.3, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x70", area:70, od:32.1, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x95", area:95, od:35.8, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x120", area:120, od:39.4, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x150", area:150, od:43.9, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x185", area:185, od:48.9, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x240", area:240, od:55.2, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x300", area:300, od:61.3, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:22.6, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:24.6, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:28.3, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:31.9, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:34.3, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:37.7, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:41.5, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:46.4, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:52.4, page:73 },
-  { cond:"Aluminium", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:58.2, page:73 },
+  // Page 71
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x1.5", od:10.8, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x2.5", od:11.9, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x4", od:14.0, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x6", od:15.6, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x10", od:17.0, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x16", od:19.6, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x25", od:23.5, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x35", od:26.2, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x50", od:28.3, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x70", od:32.1, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x95", od:35.8, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4", size:"4x120", od:39.4, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x25+16", od:22.6, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x35+16", od:24.6, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x50+25", od:28.3, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x70+35", od:31.9, page:71 },
+  { cond:"Copper", ins:"PVC", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x95+50", od:34.3, page:71 },
 
-  // Page 75: Cu/PVC/STA/PVC Armoured (4 Core Equal & Reduced Neutral)
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x4", area:4, od:17.0, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x6", area:6, od:18.4, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x10", area:10, od:19.8, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x16", area:16, od:22.2, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x25", area:25, od:25.7, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x35", area:35, od:28.4, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x50", area:50, od:31.1, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x70", area:70, od:35.9, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x95", area:95, od:39.6, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x120", area:120, od:43.4, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x150", area:150, od:48.1, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x185", area:185, od:53.1, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x240", area:240, od:59.4, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x300", area:300, od:65.5, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:24.8, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:26.8, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:30.5, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:34.5, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:38.1, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:41.7, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:45.7, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:50.4, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:56.4, page:75 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:62.2, page:75 },
+  // Page 75 & 79
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x16", od:22.2, page:75 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x25", od:25.7, page:75 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x35", od:28.4, page:75 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x50", od:31.1, page:75 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x16", od:24.4, page:79 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x25", od:29.0, page:79 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x35", od:31.9, page:79 },
+  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x50", od:35.0, page:79 },
 
-  // Page 77: AL/PVC/STA/PVC Armoured (4 Core Equal & Reduced Neutral)
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x16", area:16, od:22.1, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x25", area:25, od:25.7, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x35", area:35, od:28.4, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x50", area:50, od:31.1, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x70", area:70, od:35.9, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x95", area:95, od:39.6, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x120", area:120, od:43.4, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x150", area:150, od:48.1, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x185", area:185, od:53.1, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x240", area:240, od:59.4, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4", size:"4x300", area:300, od:65.5, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:24.8, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:26.8, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:30.5, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:34.5, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:38.1, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:41.7, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:45.7, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:50.4, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:56.4, page:77 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:62.2, page:77 },
+  // Page 82 & 83
+  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x16", od:8.7, page:82 },
+  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x25", od:10.0, page:82 },
+  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x35", od:11.1, page:82 },
+  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x50", od:12.6, page:82 },
+  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x16", od:8.5, page:83 },
+  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x25", od:10.0, page:83 },
+  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x35", od:11.1, page:83 },
+  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x50", od:12.6, page:83 },
 
-  // Page 79: CU/PVC/SWA/PVC Armoured (4 Core Equal & Reduced Neutral)
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x4", area:4, od:18.4, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x6", area:6, od:19.9, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x10", area:10, od:21.3, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x16", area:16, od:24.4, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x25", area:25, od:29.0, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x35", area:35, od:31.9, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x50", area:50, od:35.0, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x70", area:70, od:38.6, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x95", area:95, od:43.3, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x120", area:120, od:47.1, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x150", area:150, od:51.8, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x185", area:185, od:56.8, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x240", area:240, od:63.1, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x300", area:300, od:69.0, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:28.1, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:30.3, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:34.4, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:38.4, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:40.6, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:45.6, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:49.4, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:54.1, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:60.1, page:79 },
-  { cond:"Copper", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:65.9, page:79 },
+  // Page 84, 85, 86, 87
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x25 (ATA)", od:14.2, page:84 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x35 (ATA)", od:15.3, page:84 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x50 (ATA)", od:16.8, page:84 },
+  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x25 (ATA)", od:14.2, page:85 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x25 (AWA)", od:16.5, page:86 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x35 (AWA)", od:17.6, page:86 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x50 (AWA)", od:19.1, page:86 },
+  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x25 (AWA)", od:16.5, page:87 },
 
-  // Page 81: AL/PVC/SWA/PVC Armoured (4 Core Equal & Reduced Neutral)
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x16", area:16, od:25.4, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x25", area:25, od:29.0, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x35", area:35, od:31.9, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x50", area:50, od:35.0, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x70", area:70, od:38.6, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x95", area:95, od:43.3, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x120", area:120, od:47.1, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x150", area:150, od:51.8, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x185", area:185, od:56.8, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x240", area:240, od:63.1, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4", size:"4x300", area:300, od:69.0, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:28.1, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:30.3, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:34.4, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:38.4, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:40.6, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:45.6, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:49.4, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:54.1, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:60.1, page:81 },
-  { cond:"Aluminium", ins:"PVC", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:65.9, page:81 },
-
-  // Page 82: 1 Core Cu/XLPE Unarmoured
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x4", area:4, od:6.5, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x6", area:6, od:7.0, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x10", area:10, od:7.7, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x16", area:16, od:8.7, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x25", area:25, od:10.0, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x35", area:35, od:11.1, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x50", area:50, od:12.6, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x70", area:70, od:14.4, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x95", area:95, od:16.1, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x120", area:120, od:17.7, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x150", area:150, od:19.7, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x185", area:185, od:21.8, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x240", area:240, od:24.6, page:82 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x300", area:300, od:27.4, page:82 },
-
-  // Page 83: 1 Core Al/XLPE Unarmoured
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x16", area:16, od:8.5, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x25", area:25, od:10.0, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x35", area:35, od:11.1, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x50", area:50, od:12.6, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x70", area:70, od:14.4, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x95", area:95, od:16.1, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x120", area:120, od:17.7, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x150", area:150, od:19.7, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x185", area:185, od:21.8, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x240", area:240, od:24.5, page:83 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"1", size:"1x300", area:300, od:27.3, page:83 },
-
-  // Page 84 & 85: 1 Core ATA Armoured (XLPE)
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x25 (ATA)", area:25, od:14.2, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x35 (ATA)", area:35, od:15.3, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x50 (ATA)", area:50, od:16.8, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x70 (ATA)", area:70, od:18.6, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x95 (ATA)", area:95, od:20.1, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x120 (ATA)", area:120, od:21.7, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x150 (ATA)", area:150, od:23.5, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x185 (ATA)", area:185, od:25.6, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x240 (ATA)", area:240, od:28.2, page:84 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x300 (ATA)", area:300, od:31.0, page:84 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x16 (ATA)", area:16, od:12.7, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x25 (ATA)", area:25, od:14.2, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x35 (ATA)", area:35, od:15.3, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x50 (ATA)", area:50, od:16.8, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x70 (ATA)", area:70, od:18.6, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x95 (ATA)", area:95, od:20.1, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x120 (ATA)", area:120, od:21.7, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x150 (ATA)", area:150, od:23.5, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x185 (ATA)", area:185, od:25.6, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x240 (ATA)", area:240, od:28.1, page:85 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"ATA", cores:"1", size:"1x300 (ATA)", area:300, od:30.9, page:85 },
-
-  // Page 86 & 87: 1 Core AWA Armoured (XLPE)
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x25 (AWA)", area:25, od:16.5, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x35 (AWA)", area:35, od:17.6, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x50 (AWA)", area:50, od:19.1, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x70 (AWA)", area:70, od:20.9, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x95 (AWA)", area:95, od:22.4, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x120 (AWA)", area:120, od:24.0, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x150 (AWA)", area:150, od:25.8, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x185 (AWA)", area:185, od:27.9, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x240 (AWA)", area:240, od:30.7, page:86 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x300 (AWA)", area:300, od:33.5, page:86 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x16 (AWA)", area:16, od:15.0, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x25 (AWA)", area:25, od:16.5, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x35 (AWA)", area:35, od:17.6, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x50 (AWA)", area:50, od:19.1, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x70 (AWA)", area:70, od:20.9, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x95 (AWA)", area:95, od:22.4, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x120 (AWA)", area:120, od:24.0, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x150 (AWA)", area:150, od:25.8, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x185 (AWA)", area:185, od:27.9, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x240 (AWA)", area:240, od:30.6, page:87 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"AWA", cores:"1", size:"1x300 (AWA)", area:300, od:33.4, page:87 },
-
-  // Page 89: Cu/XLPE Unarmoured (4 Core Equal & Reduced Neutral)
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x1.5", area:1.5, od:10.3, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x2.5", area:2.5, od:11.4, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x4", area:4, od:12.6, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x6", area:6, od:14.0, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x10", area:10, od:15.5, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x16", area:16, od:17.9, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x25", area:25, od:22.1, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x35", area:35, od:24.8, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x50", area:50, od:26.3, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x70", area:70, od:30.4, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x95", area:95, od:33.1, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x120", area:120, od:37.2, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x150", area:150, od:41.7, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x185", area:185, od:46.7, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x240", area:240, od:52.5, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x300", area:300, od:58.1, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:21.2, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:23.2, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:26.1, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:30.2, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:32.6, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:35.5, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:39.3, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:44.2, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:49.7, page:89 },
-  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:55.0, page:89 },
-
-  // Page 91: AL/XLPE Unarmoured (4 Core Equal & Reduced Neutral)
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x16", area:16, od:18.5, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x25", area:25, od:22.1, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x35", area:35, od:24.8, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x50", area:50, od:26.3, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x70", area:70, od:30.4, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x95", area:95, od:33.1, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x120", area:120, od:37.2, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x150", area:150, od:41.7, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x185", area:185, od:46.7, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x240", area:240, od:52.5, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x300", area:300, od:58.1, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:21.2, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:23.2, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:26.1, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:30.2, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:32.6, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:35.5, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:39.3, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:44.2, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:49.7, page:91 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:55.0, page:91 },
-
-  // Page 93: Cu/XLPE/STA/PVC Armoured (4 Core Equal & Reduced Neutral)
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x6", area:6, od:17.0, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x10", area:10, od:18.4, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x16", area:16, od:20.8, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x25", area:25, od:24.3, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x35", area:35, od:27.0, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x50", area:50, od:28.3, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x70", area:70, od:32.8, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x95", area:95, od:36.9, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x120", area:120, od:41.2, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x150", area:150, od:45.7, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x185", area:185, od:50.7, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x240", area:240, od:56.5, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x300", area:300, od:62.1, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:23.4, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:25.4, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:28.3, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:33.0, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:36.2, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:39.1, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:43.3, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:48.2, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:53.7, page:93 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:58.8, page:93 },
-
-  // Page 95: AL/XLPE/STA/PVC Armoured (4 Core Equal & Reduced Neutral)
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x16", area:16, od:20.7, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x25", area:25, od:24.3, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x35", area:35, od:27.0, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x50", area:50, od:28.3, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x70", area:70, od:32.8, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x95", area:95, od:36.9, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x120", area:120, od:41.2, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x150", area:150, od:45.7, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x185", area:185, od:50.7, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x240", area:240, od:56.5, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x300", area:300, od:62.1, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:23.4, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:25.4, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:28.3, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:33.0, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:36.2, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:39.1, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:43.3, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:48.2, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:53.7, page:95 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:58.8, page:95 },
-
-  // Page 97: CU/XLPE/SWA/PVC Armoured (4 Core Equal & Reduced Neutral)
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x4", area:4, od:16.3, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x6", area:6, od:18.4, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x10", area:10, od:19.8, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x16", area:16, od:23.0, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x25", area:25, od:27.6, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x35", area:35, od:30.5, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x50", area:50, od:31.8, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x70", area:70, od:36.9, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x95", area:95, od:39.4, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x120", area:120, od:44.9, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x150", area:150, od:49.4, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x185", area:185, od:54.2, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x240", area:240, od:60.2, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x300", area:300, od:65.8, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:26.7, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:28.7, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:31.8, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:36.9, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:38.9, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:41.8, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:47.0, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:51.9, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:57.4, page:97 },
-  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:62.5, page:97 },
-
-  // Page 99: AL/XLPE/SWA/PVC Armoured (4 Core Equal & Reduced Neutral)
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x16", area:16, od:24.0, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x25", area:25, od:27.6, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x35", area:35, od:30.5, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x50", area:50, od:31.8, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x70", area:70, od:36.9, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x95", area:95, od:39.4, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x120", area:120, od:44.9, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x150", area:150, od:49.4, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x185", area:185, od:54.2, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x240", area:240, od:60.2, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x300", area:300, od:65.8, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x25+16", area:25, od:26.7, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x35+16", area:35, od:28.7, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x50+25", area:50, od:31.8, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x70+35", area:70, od:36.9, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x95+50", area:95, od:38.9, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x120+70", area:120, od:41.8, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x150+70", area:150, od:47.0, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x185+95", area:185, od:51.9, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x240+120", area:240, od:57.4, page:99 },
-  { cond:"Aluminium", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4 (With Reduced Neutral)", size:"3x300+150", area:300, od:62.5, page:99 }
+  // Page 89, 93, 97
+  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x16", od:17.9, page:89 },
+  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x25", od:22.1, page:89 },
+  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x35", od:24.8, page:89 },
+  { cond:"Copper", ins:"XLPE", arm:"Unarmoured", armType:"None", cores:"4", size:"4x50", od:26.3, page:89 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x16", od:20.8, page:93 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x25", od:24.3, page:93 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"STA", cores:"4", size:"4x35", od:27.0, page:93 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x16", od:23.0, page:97 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x25", od:27.6, page:97 },
+  { cond:"Copper", ins:"XLPE", arm:"Armoured", armType:"SWA", cores:"4", size:"4x35", od:30.5, page:97 }
 ];
 
-// =========================================================================
-// APPLICATION CONTROLLER
-// =========================================================================
-function syncStep(prefix) {
-  const mode = document.querySelector(`input[name="${prefix}-mode"]:checked`).value;
-  const isGround = (prefix === 's2');
-  const isIncluded = isGround ? document.getElementById('s2-include').checked : true;
+let appState = {
+  s1: { mode: 'Cable' },
+  s2: { mode: 'Wire' }
+};
 
-  const cableCol = document.getElementById(`${prefix}-cable-col`);
-  const wireCol = document.getElementById(`${prefix}-wire-col`);
-
-  if (!isIncluded) {
-    cableCol.classList.add('dimmed');
-    wireCol.classList.add('dimmed');
-    return;
-  }
-
-  if (mode === 'Cable') {
-    cableCol.classList.remove('dimmed');
-    wireCol.classList.add('dimmed');
-  } else {
-    cableCol.classList.add('dimmed');
-    wireCol.classList.remove('dimmed');
-  }
+// Expand / Minimize Toggle Logic
+function toggleCollapse(step) {
+  const body = document.getElementById(`${step}-body`);
+  const chevron = document.getElementById(`${step}-chevron`);
+  const isCollapsed = body.classList.toggle('collapsed');
+  chevron.classList.toggle('collapsed', isCollapsed);
 }
 
-function onArmourChanged(prefix) {
-  const arm = document.getElementById(`${prefix}-arm`).value;
-  const armType = document.getElementById(`${prefix}-arm-type`);
-  const cores = document.getElementById(`${prefix}-cores`).value;
+// Mode Switcher (Cable vs Wire)
+function setMode(step, mode) {
+  appState[step].mode = mode;
+  document.getElementById(`${step}-btn-cable`).classList.toggle('active', mode === 'Cable');
+  document.getElementById(`${step}-btn-wire`).classList.toggle('active', mode === 'Wire');
+
+  document.getElementById(`${step}-cable-fields`).style.display = (mode === 'Cable') ? 'block' : 'none';
+  document.getElementById(`${step}-wire-fields`).style.display = (mode === 'Wire') ? 'block' : 'none';
+  calculateFill();
+}
+
+// Stepper Logic
+function adjustQty(id, delta) {
+  const el = document.getElementById(id);
+  let val = parseInt(el.textContent, 10) + delta;
+  if (val < 1) val = 1;
+  if (val > 20) val = 20;
+  el.textContent = val;
+  calculateFill();
+}
+
+function togglePE() {
+  const active = document.getElementById('pe-toggle').checked;
+  const container = document.getElementById('pe-container');
+  container.style.opacity = active ? '1' : '0.35';
+  container.style.pointerEvents = active ? 'auto' : 'none';
+  calculateFill();
+}
+
+function onArmourChanged(step) {
+  const arm = document.getElementById(`${step}-arm`).value;
+  const cores = (step === 's2') ? '1' : document.getElementById(`${step}-cores`).value;
+  const armType = document.getElementById(`${step}-arm-type`);
 
   if (arm === 'Armoured') {
     armType.disabled = false;
     armType.innerHTML = '';
     if (cores === '1') {
-      armType.innerHTML = '<option value="AWA">AWA</option><option value="ATA">ATA</option>';
+      armType.innerHTML = '<option value="AWA" selected>AWA</option><option value="ATA">ATA</option>';
     } else {
-      armType.innerHTML = '<option value="SWA">SWA</option><option value="STA">STA</option>';
+      armType.innerHTML = '<option value="SWA" selected>SWA</option><option value="STA">STA</option>';
     }
   } else {
     armType.disabled = true;
     armType.innerHTML = '<option value="None"></option>';
   }
-  updateCableSizes(prefix);
+  updateCableSizes(step);
 }
 
-function onCoresChanged(prefix) {
-  const arm = document.getElementById(`${prefix}-arm`).value;
-  const armType = document.getElementById(`${prefix}-arm-type`);
-  const cores = document.getElementById(`${prefix}-cores`).value;
-
-  if (arm === 'Armoured') {
-    const curVal = armType.value;
-    armType.innerHTML = '';
-    if (cores === '1') {
-      armType.innerHTML = '<option value="AWA">AWA</option><option value="ATA">ATA</option>';
-      if (curVal === 'AWA' || curVal === 'ATA') armType.value = curVal;
-    } else {
-      armType.innerHTML = '<option value="SWA">SWA</option><option value="STA">STA</option>';
-      if (curVal === 'SWA' || curVal === 'STA') armType.value = curVal;
-    }
-  }
-  updateCableSizes(prefix);
+function onCoresChanged(step) {
+  const arm = document.getElementById(`${step}-arm`).value;
+  if (arm === 'Armoured') onArmourChanged(step);
+  else updateCableSizes(step);
 }
 
-function updateCableSizes(prefix) {
-  const cond = document.getElementById(`${prefix}-cond`).value;
-  const ins = document.getElementById(`${prefix}-ins`).value;
-  const arm = document.getElementById(`${prefix}-arm`).value;
-  const armType = (arm === 'Armoured') ? document.getElementById(`${prefix}-arm-type`).value : 'None';
-  const cores = document.getElementById(`${prefix}-cores`).value;
+function updateCableSizes(step) {
+  const cond = document.getElementById(`${step}-cond`).value;
+  const ins = document.getElementById(`${step}-ins`).value;
+  const arm = document.getElementById(`${step}-arm`).value;
+  const armType = (arm === 'Armoured') ? document.getElementById(`${step}-arm-type`).value : 'None';
+  const cores = (step === 's2') ? '1' : document.getElementById(`${step}-cores`).value;
 
-  const matches = CABLES_DB.filter(c => 
+  const matches = CABLES.filter(c => 
     c.cond === cond && c.ins === ins && c.arm === arm && c.armType === armType && c.cores === cores
   );
 
-  const sel = document.getElementById(`${prefix}-csize`);
+  const sel = document.getElementById(`${step}-csize`);
   sel.innerHTML = '';
 
   if (matches.length > 0) {
     matches.forEach((c, idx) => {
       const opt = document.createElement('option');
       opt.value = idx;
-      opt.textContent = `${c.size} (OD: ${c.od} mm)`;
+      opt.textContent = c.size;
       sel.appendChild(opt);
     });
     sel.dataset.matches = JSON.stringify(matches);
-    onCableSelected(prefix);
   } else {
-    sel.innerHTML = '<option value="-1">No matching table found</option>';
+    sel.innerHTML = '<option value="-1">No matching size</option>';
     sel.dataset.matches = '[]';
-    document.getElementById(`${prefix}-cpage`).textContent = '';
   }
+  onSizeChanged(step);
 }
 
-function onCableSelected(prefix) {
-  const sel = document.getElementById(`${prefix}-csize`);
-  const pageLbl = document.getElementById(`${prefix}-cpage`);
-  const matches = JSON.parse(sel.dataset.matches || '[]');
-  const idx = parseInt(sel.value, 10);
+function updateWireSizes(step) {
+  const type = document.getElementById(`${step}-wtype`).value;
+  const matches = WIRES.filter(w => w.type === type);
 
-  if (matches.length > 0 && idx >= 0 && matches[idx]) {
-    pageLbl.textContent = matches[idx].page;
-  } else {
-    pageLbl.textContent = '';
-  }
-}
-
-function updateWireSizes(prefix) {
-  const wtype = document.getElementById(`${prefix}-wtype`).value;
-  const matches = WIRES_DB.filter(w => w.type === wtype);
-
-  const sel = document.getElementById(`${prefix}-wsize`);
+  const sel = document.getElementById(`${step}-wsize`);
   sel.innerHTML = '';
 
   if (matches.length > 0) {
     matches.forEach((w, idx) => {
       const opt = document.createElement('option');
       opt.value = idx;
-      opt.textContent = `${w.size} (OD: ${w.od} mm)`;
+      opt.textContent = w.size;
       sel.appendChild(opt);
     });
-    // Default to ~10-16 mm2
-    const defIdx = Math.min(5, matches.length - 1);
-    sel.value = defIdx;
     sel.dataset.matches = JSON.stringify(matches);
-    onWireSelected(prefix);
-  } else {
-    sel.innerHTML = '<option value="-1">No matching table found</option>';
-    sel.dataset.matches = '[]';
-    document.getElementById(`${prefix}-wpage`).textContent = '';
   }
+  onSizeChanged(step);
 }
 
-function onWireSelected(prefix) {
-  const sel = document.getElementById(`${prefix}-wsize`);
-  const pageLbl = document.getElementById(`${prefix}-wpage`);
+function onSizeChanged(step) {
+  const isCable = appState[step].mode === 'Cable';
+  const sel = document.getElementById(isCable ? `${step}-csize` : `${step}-wsize`);
+  const sub = document.getElementById(isCable ? `${step}-c-sub` : `${step}-w-sub`);
   const matches = JSON.parse(sel.dataset.matches || '[]');
   const idx = parseInt(sel.value, 10);
 
-  if (matches.length > 0 && idx >= 0 && matches[idx]) {
-    pageLbl.textContent = matches[idx].page;
+  if (matches[idx]) {
+    sub.textContent = `OD ${matches[idx].od} mm · ${matches[idx].page}`;
   } else {
-    pageLbl.textContent = '';
+    sub.textContent = '';
   }
+  calculateFill();
 }
 
-// Initialize Steps on Load
-function init() {
-  ['s1', 's2'].forEach(prefix => {
-    updateCableSizes(prefix);
-    updateWireSizes(prefix);
-    syncStep(prefix);
-  });
-}
-
-// Calculate Conduit Filling Ratio
 function calculateFill() {
-  const diaInput = document.getElementById('conduit-dia');
-  const conduitDia = parseFloat(diaInput.value);
+  const conduitDia = parseFloat(document.getElementById('conduit-dia').value);
+  if (isNaN(conduitDia) || conduitDia <= 0) return;
 
-  if (isNaN(conduitDia) || conduitDia <= 0) {
-    alert('Please enter a valid positive number for the Conduit Internal Diameter.');
-    return;
-  }
-
-  // --- Main Conductor Area ---
-  const s1Mode = document.querySelector('input[name="s1-mode"]:checked').value;
-  let mainOd = 0, mainQty = 0;
-
-  if (s1Mode === 'Cable') {
+  // Main
+  let mainArea = 0, mainCount = 0;
+  if (appState.s1.mode === 'Cable') {
     const sel = document.getElementById('s1-csize');
     const matches = JSON.parse(sel.dataset.matches || '[]');
-    const idx = parseInt(sel.value, 10);
-    if (!matches[idx]) {
-      alert('Please select a valid main power cable.');
-      return;
+    const c = matches[parseInt(sel.value, 10)];
+    if (c) {
+      const qty = parseInt(document.getElementById('s1-qty').textContent, 10);
+      mainArea = (Math.PI / 4.0) * Math.pow(c.od, 2) * qty;
+      mainCount = qty;
     }
-    mainOd = matches[idx].od;
-    mainQty = parseInt(document.getElementById('s1-cqty').value, 10) || 1;
   } else {
     const sel = document.getElementById('s1-wsize');
     const matches = JSON.parse(sel.dataset.matches || '[]');
-    const idx = parseInt(sel.value, 10);
-    if (!matches[idx]) {
-      alert('Please select a valid main power wire.');
-      return;
+    const w = matches[parseInt(sel.value, 10)];
+    if (w) {
+      const qty = parseInt(document.getElementById('s1-w-qty').textContent, 10);
+      mainArea = (Math.PI / 4.0) * Math.pow(w.od, 2) * qty;
+      mainCount = qty;
     }
-    mainOd = matches[idx].od;
-    mainQty = parseInt(document.getElementById('s1-wqty').value, 10) || 1;
   }
 
-  const mainArea = (Math.PI / 4.0) * Math.pow(mainOd, 2) * mainQty;
-  const mainConductorsCount = mainQty;
-
-  // --- Ground Conductor Area ---
-  let groundArea = 0, groundConductorsCount = 0;
-  const s2Included = document.getElementById('s2-include').checked;
-
-  if (s2Included) {
-    const s2Mode = document.querySelector('input[name="s2-mode"]:checked').value;
-    let groundOd = 0, groundQty = 0;
-
-    if (s2Mode === 'Cable') {
+  // PE
+  let peArea = 0, peCount = 0;
+  if (document.getElementById('pe-toggle').checked) {
+    if (appState.s2.mode === 'Cable') {
       const sel = document.getElementById('s2-csize');
       const matches = JSON.parse(sel.dataset.matches || '[]');
-      const idx = parseInt(sel.value, 10);
-      if (matches[idx]) {
-        groundOd = matches[idx].od;
-        groundQty = parseInt(document.getElementById('s2-cqty').value, 10) || 1;
-        groundArea = (Math.PI / 4.0) * Math.pow(groundOd, 2) * groundQty;
-        groundConductorsCount = groundQty;
+      const c = matches[parseInt(sel.value, 10)];
+      if (c) {
+        const qty = parseInt(document.getElementById('s2-qty').textContent, 10);
+        peArea = (Math.PI / 4.0) * Math.pow(c.od, 2) * qty;
+        peCount = qty;
       }
     } else {
       const sel = document.getElementById('s2-wsize');
       const matches = JSON.parse(sel.dataset.matches || '[]');
-      const idx = parseInt(sel.value, 10);
-      if (matches[idx]) {
-        groundOd = matches[idx].od;
-        groundQty = parseInt(document.getElementById('s2-wqty').value, 10) || 1;
-        groundArea = (Math.PI / 4.0) * Math.pow(groundOd, 2) * groundQty;
-        groundConductorsCount = groundQty;
+      const w = matches[parseInt(sel.value, 10)];
+      if (w) {
+        const qty = parseInt(document.getElementById('s2-w-qty').textContent, 10);
+        peArea = (Math.PI / 4.0) * Math.pow(w.od, 2) * qty;
+        peCount = qty;
       }
     }
   }
 
-  const totalCablesArea = mainArea + groundArea;
+  const totalArea = mainArea + peArea;
   const conduitArea = (Math.PI / 4.0) * Math.pow(conduitDia, 2);
-  const fillRatio = (totalCablesArea / conduitArea) * 100.0;
+  const ratio = (totalArea / conduitArea) * 100.0;
 
-  // Exact NEC Chapter 9 Table 1 Limits:
-  // 1 conductor: 53%, 2 conductors: 31%, 3+ conductors: 40%
-  const totalConductors = mainConductorsCount + groundConductorsCount;
+  const totalConductors = mainCount + peCount;
   let maxLimit = 40.0;
   if (totalConductors === 1) maxLimit = 53.0;
   else if (totalConductors === 2) maxLimit = 31.0;
 
-  const unitStr = totalConductors === 1 ? 'conductor' : 'conductors';
-
-  // Update Result Display
   document.getElementById('res-cables-area').textContent = 
-    `Total Cables/Wires Area: ${totalCablesArea.toFixed(2)} mm² (Main: ${mainArea.toFixed(1)} mm² + Ground: ${groundArea.toFixed(1)} mm²)`;
+    `Total Conductor Area: ${totalArea.toFixed(1)} mm² (Main: ${mainArea.toFixed(1)} mm² + Ground: ${peArea.toFixed(1)} mm²)`;
   document.getElementById('res-conduit-area').textContent = 
-    `Conduit Internal Area: ${conduitArea.toFixed(2)} mm² (ID = ${conduitDia.toFixed(1)} mm)`;
-  document.getElementById('res-ratio').textContent = 
-    `Calculated Filling Ratio: ${fillRatio.toFixed(2)} %`;
+    `Conduit Area: ${conduitArea.toFixed(1)} mm²`;
+  document.getElementById('res-ratio').textContent = `${ratio.toFixed(1)} %`;
   document.getElementById('res-limit').textContent = 
-    `Allowed Limit (NEC for ${totalConductors} ${unitStr}): ${maxLimit.toFixed(1)} %`;
+    `Allowed Limit (NEC for ${totalConductors} ${totalConductors === 1 ? 'conductor' : 'conductors'}): ${maxLimit.toFixed(1)} %`;
 
-  const statusEl = document.getElementById('res-status');
-  if (fillRatio <= maxLimit) {
-    statusEl.textContent = `✓ COMPLIANT: Filling ratio (${fillRatio.toFixed(1)}%) is within the ${maxLimit.toFixed(1)}% NEC limit.`;
-    statusEl.className = 'status-badge pass';
+  const badge = document.getElementById('res-status');
+  if (ratio <= maxLimit) {
+    badge.textContent = `✓ COMPLIANT (${ratio.toFixed(1)}% ≤ ${maxLimit.toFixed(1)}%)`;
+    badge.className = 'status-pill pass';
   } else {
-    const excess = fillRatio - maxLimit;
-    statusEl.textContent = `✗ EXCEEDS LIMIT: Overfilled by ${excess.toFixed(1)}%! Select a larger conduit diameter.`;
-    statusEl.className = 'status-badge fail';
+    const over = ratio - maxLimit;
+    badge.textContent = `✗ EXCEEDS LIMIT (+${over.toFixed(1)}% overfill)`;
+    badge.className = 'status-pill fail';
   }
 }
 
-window.onload = init;
+// Initial setup
+window.onload = function() {
+  onArmourChanged('s1');
+  updateWireSizes('s1');
+  onArmourChanged('s2');
+  updateWireSizes('s2');
+  calculateFill();
+};
 </script>
 
 </body>
