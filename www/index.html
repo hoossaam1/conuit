@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Conduit fill</title>
+  <title>Filling Ratio</title>
   <style>
     :root {
       --bg: #f2f5f3;
@@ -56,29 +56,22 @@
     }
 
     .app-icon {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       background: var(--primary);
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-    }
-
-    .brand-text .sub {
-      font-size: 0.68rem;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      color: var(--primary);
-      text-transform: uppercase;
+      box-shadow: 0 2px 5px rgba(52,120,84,0.25);
     }
 
     .brand-text .main-title {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: var(--text-main);
-      line-height: 1.15;
+      line-height: 1.1;
     }
 
     .wa-btn {
@@ -452,14 +445,19 @@
   <!-- Top Bar -->
   <div class="top-bar">
     <div class="brand-left">
+      <!-- Intuitive Conduit Cross-Section Icon -->
       <div class="app-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Outer Conduit Cross Section -->
+          <circle cx="12" cy="12" r="10" stroke-width="2.2" stroke="white"></circle>
+          <!-- Internal Conductors -->
+          <circle cx="9" cy="9.5" r="2.8" fill="white" stroke="white" stroke-width="0.5"></circle>
+          <circle cx="15" cy="9.5" r="2.8" fill="white" stroke="white" stroke-width="0.5"></circle>
+          <circle cx="12" cy="15.5" r="2.8" fill="white" stroke="white" stroke-width="0.5"></circle>
         </svg>
       </div>
       <div class="brand-text">
-        <div class="sub">Field Calculator</div>
-        <div class="main-title">Conduit fill</div>
+        <div class="main-title">Filling Ratio</div>
       </div>
     </div>
     <a class="wa-btn" href="https://wa.me/201148471071" target="_blank" rel="noopener">
