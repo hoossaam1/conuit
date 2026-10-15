@@ -1,6 +1,6 @@
 {
   "appId": "com.elsewedy.conduitfill",
-  "appName": "LV Filling Ratio",
+  "appName": "LV Cables",
   "webDir": "www",
   "server": {
     "androidScheme": "https"
