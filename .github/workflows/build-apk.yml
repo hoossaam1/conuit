@@ -40,7 +40,7 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=release.jks \
+            -Pandroid.injected.signing.store.file="$PWD/app/release.jks" \
             -Pandroid.injected.signing.store.password="MySecretPass123" \
             -Pandroid.injected.signing.key.alias="conduitkey" \
             -Pandroid.injected.signing.key.password="MySecretPass123" \
