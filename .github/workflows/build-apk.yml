@@ -30,21 +30,10 @@ jobs:
           npm install
           npx cap sync android || (npx cap add android && npx cap sync android)
 
-      - name: Decode Keystore Safely via Python
-        env:
-          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Generate Permanent Keystore on the Fly
         run: |
-          python3 -c '
-          import os, base64
-          os.makedirs("android/app", exist_ok=True)
-          raw = os.environ.get("KEYSTORE_B64", "").strip()
-          missing_padding = len(raw) % 4
-          if missing_padding:
-              raw += "=" * (4 - missing_padding)
-          with open("android/app/release.jks", "wb") as f:
-              f.write(base64.b64decode(raw))
-          print("Keystore successfully written and padded to android/app/release.jks")
-          '
+          mkdir -p android/app
+          keytool -genkey -v -keystore android/app/release.jks -alias conduitkey -keyalg RSA -keysize 2048 -validity 10000 -storepass MySecretPass123 -keypass MySecretPass123 -dname "CN=Hossam,O=App,C=EG"
 
       - name: Build Signed Release APK
         run: |
@@ -52,9 +41,9 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease \
             -Pandroid.injected.signing.store.file=release.jks \
-            -Pandroid.injected.signing.store.password="${{ secrets.KEYSTORE_PASSWORD }}" \
-            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
-            -Pandroid.injektive.signing.key.password="${{ secrets.KEY_PASSWORD }}" \
+            -Pandroid.injected.signing.store.password="MySecretPass123" \
+            -Pandroid.injected.signing.key.alias="conduitkey" \
+            -Pandroid.injected.signing.key.password="MySecretPass123" \
             -PversionCode=${{ github.run_number }} \
             --no-daemon
 
