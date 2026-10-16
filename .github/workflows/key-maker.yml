@@ -1,0 +1,13 @@
+name: Key Maker
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: keytool -genkey -v -keystore myapp.keystore -alias myappalias -keyalg RSA -keysize 2048 -validity 10000 -storepass myapppassword -keypass myapppassword -dname "CN=Conuit, OU=App, O=Conuit, C=EG"
+      - run: base64 myapp.keystore > keystore.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: keystore-text
+          path: keystore.txt
