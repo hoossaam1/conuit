@@ -30,10 +30,10 @@ jobs:
           npm install
           npx cap sync android || (npx cap add android && npx cap sync android)
 
-      - name: Generate Permanent Keystore on the Fly
+      - name: Decode Keystore from Secrets
         run: |
           mkdir -p android/app
-          keytool -genkey -v -keystore android/app/release.jks -alias conduitkey -keyalg RSA -keysize 2048 -validity 10000 -storepass MySecretPass123 -keypass MySecretPass123 -dname "CN=Hossam,O=App,C=EG"
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.jks
 
       - name: Build Signed Release APK
         run: |
@@ -41,9 +41,9 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease \
             -Pandroid.injected.signing.store.file="$PWD/app/release.jks" \
-            -Pandroid.injected.signing.store.password="MySecretPass123" \
-            -Pandroid.injected.signing.key.alias="conduitkey" \
-            -Pandroid.injected.signing.key.password="MySecretPass123" \
+            -Pandroid.injected.signing.store.password="${{ secrets.KEYSTORE_PASSWORD }}" \
+            -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
+            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}" \
             -PversionCode=${{ github.run_number }} \
             --no-daemon
 
